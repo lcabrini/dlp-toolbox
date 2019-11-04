@@ -2,3 +2,15 @@ HOSTS = (
         '8.8.8.8',
         '10.254.3.1',
 )
+
+SMS = {
+        'url': '<your RouteSMS URL>',
+        'username': '<your RouteSMS username>',
+        'password': '<your RouteSMS password>',
+        'recipients': (
+            '+23355123456',
+            '+23324654321',
+            '+23323456789',
+            )
+        }
+
