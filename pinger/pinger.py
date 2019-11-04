@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
-import shlex
-import subprocess
+#import shlex
+#import subprocess
 import time
 import threading
 import schedule
