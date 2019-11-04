@@ -3,20 +3,27 @@
 import shlex
 import subprocess
 import time
+import json
 import threading
 import schedule
+import pingparsing
 import config
 
 def ping(host):
-    for ip in config.HOSTS:
-        cmd = "ping -c 5 {}".format(ip)
-        args = shlex.split(cmd)
-        proc = subprocess.run(args, capture_output=True)
-        for line in proc.stdout.splitlines()[-2:]:
-            s = line.decode("UTF-8")
-            print(s)
-            #pass
-            #print("LINE: {}".format(line.decode("UTF-8")))
+    parser = pingparsing.PingParsing()
+    transmitter = pingparsing.PingTransmitter()
+    transmitter.destination = host
+    transmitter.count = 5
+    result = transmitter.ping()
+    print(json.dumps(parser.parse(result).as_dict(), indent=2))
+    #cmd = "ping -c 5 {}".format(ip)
+    #args = shlex.split(cmd)
+    #proc = subprocess.run(args, capture_output=True)
+    #for line in proc.stdout.splitlines()[-2:]:
+    #    s = line.decode("UTF-8")
+    #    print(s)
+    #    #pass
+    #    #print("LINE: {}".format(line.decode("UTF-8")))
 
 def ping_job():
     threads = list()
