@@ -3,7 +3,6 @@
 import shlex
 import subprocess
 import time
-import json
 import threading
 import schedule
 import pingparsing
@@ -15,7 +14,9 @@ def ping(host):
     transmitter.destination = host
     transmitter.count = 5
     result = transmitter.ping()
-    print(json.dumps(parser.parse(result).as_dict(), indent=2))
+    stats = parser.parse(result).as_dict()
+    print(stats['rtt_avg'])
+    #print(json.dumps(parser.parse(result).as_dict(), indent=2))
     #cmd = "ping -c 5 {}".format(ip)
     #args = shlex.split(cmd)
     #proc = subprocess.run(args, capture_output=True)
