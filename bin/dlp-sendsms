@@ -38,6 +38,7 @@ if [[ -z $message ]]; then
     exit 1
 fi
 
+# TODO: for now we only support RouteSMS. Maybe others in the future?
 response=$(curl -s -X GET -G $url \
     --data-urlencode "username=$username" \
     --data-urlencode "password=$password" \
