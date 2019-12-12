@@ -62,3 +62,11 @@ if ! whence git > /dev/null 2>&1; then
             exit 1
     esac
 fi
+
+srcdir="/usr/local/src/"
+[[ ! -d $srcdir ]] && mkdir -p $srcdir
+if [[ ! -d $srcdir/dlp-toolbox ]]; then
+    (cd $srcdir && git clone git://github.com/lcabrini/dlp-toolbox)
+else
+    (cd $srcdir && git pull)
+fi
