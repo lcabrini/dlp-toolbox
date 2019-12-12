@@ -31,7 +31,7 @@ if [ -z "$RUNNING_ZSH" ]; then
 fi
 
 for p in has_dnf has_yum has_apt; do
-    if $p; then
+    if [[ $p -eq 0 ]]; then
         pkgman=$p
         break
     fi
@@ -57,4 +57,3 @@ if ! whence git > /dev/null 2>&1; then
             exit 1
     esac
 fi
-
