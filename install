@@ -76,3 +76,7 @@ else
     (cd $srcdir/dlp-toolbox && git pull)
 fi
 
+if [[ -z $(cat /etc/group | grep ^$dlpgroup:) ]]; then
+    print "$dlpgroup not found, creating it"
+    groupadd $dlpgroup
+fi
