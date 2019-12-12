@@ -27,6 +27,9 @@ destination=$1
 if [[ -z $destination ]]; then
     print "No destination specified" >&2
     exit 1
+elif [[ ! $destination =~ ^\\+[0-9]+$ ]]; then
+    print "Phone number is not valid" >&2
+    exit 1
 fi
 
 message=$2
