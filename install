@@ -3,6 +3,11 @@
 # Help vim out:
 # vim: ft=zsh
 
+if [ "$EUID" -ne "0" ]; then
+   echo "This should be run as root"
+   exit 1
+fi
+
 which dnf > /dev/null 2>&1
 has_dnf=$?
 which yum > /dev/null 2>&1
