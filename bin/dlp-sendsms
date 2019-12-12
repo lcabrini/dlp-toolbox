@@ -48,7 +48,7 @@ response=$(curl -s -X GET -G $url \
     --data-urlencode "source=Delaphone" \
     --data-urlencode "message=$2")
 
-$code=$(print $response | cut -d'|' -f1)
+code=$(print $response | cut -d'|' -f1)
 if [[ $code -eq $routesms_success ]]; then
     exit 0
 else
