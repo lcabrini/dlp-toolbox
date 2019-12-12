@@ -6,11 +6,34 @@ routesms_success=1701
 conf=etc/sms.conf
 
 url=$(< $conf grep ^url= | cut -d'=' -f2)
+if [[ -z $url ]]; then
+    print "RouteSMS URL missing from config" >&2
+    exit 1
+fi
+
 username=$(< $conf grep ^username= | cut -d'=' -f2)
+if [[ -z $username ]]; then
+    print "RouteSMS username missing from config" >&2
+    exit 1
+fi
+
 password=$(< $conf grep ^password= | cut -d'=' -f2)
+if [[ -z $password ]]; then
+    print "RouteSMS password missing from config" >&2
+    exit 1
+fi
 
 destination=$1
+if [[ -z $destination ]]; then
+    print "No destination specified" >&2
+    exit 1
+fi
+
 message=$2
+if [[ -z $message ]]; then
+    print "No message specified" >&2
+    exit 1
+fi
 
 response=$(curl -s -X GET -G $url \
     --data-urlencode "username=$username" \
