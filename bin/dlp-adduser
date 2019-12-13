@@ -1,7 +1,7 @@
 #! /bin/zsh
 
-if [[ $EUID -ne 0 ]]; then
-    echo "This program should be run as root."
+if [[ $EUID -eq 0 ]]; then
+    echo "This program should not be run as root."
     exit 1
 fi
 
@@ -16,13 +16,12 @@ print -n "Enter phone: "
 read phone
 
 pass=$(< /dev/urandom tr -dc 0-9 | head -c${1:-6})
-useradd -m $user
-chpasswd <<< $user:$pass
+sudo useradd -m $user
+sudo chpasswd <<< $user:$pass
 
 # NOTE: remember to escape all $ 
-keyfile=$HOME/.ssh/id_rsa
-su $user -ls /bin/zsh <<EOF
-ssh-keygen -q -t rsa -N '' -f $keyfile 2> /dev/null <<< y > /dev/null
+sudo su $user -s /bin/zsh <<EOF
+ssh-keygen -q -t rsa -N '' -f \$HOME/.ssh/id_rsa <<< y 
 EOF
 
 # TODO: continue here. Add user to remote and ssh-copy-id their SSH key
@@ -32,4 +31,47 @@ echo I am $USER
 # temporary. should assume script is in /usr/local/bin
 ./bin/dlp-sendsms $phone "Your Linux password: $pass"
 
-passwd -e $user
+sudo passwd -e $user
+
+pubkey=$(sudo cat /home/$user/.ssh/id_rsa.pub)
+print pass 1
+tmp=$(mktemp)
+print pass 2
+#print "user=$user" > $tmp
+#print "pass=$pass" >> $tmp
+#print "pubkey=$pubkey" >> $tmp
+#print $pubkey > $tmp
+#sudo cat /home/$user/.ssh/id_rsa.pub > $tmp
+
+print pass 3
+
+for host in $(cat etc/hosts); do
+    (
+    #print "Adding remote user"
+    #ssh $host sudo useradd -m $user
+    #print "Setting remote password"
+    #ssh $host sudo chpasswd <<< "$user:$pass"
+    scp $tmp $host:
+    print pass 4
+
+    ssh $host /bin/zsh <<EOF
+    sudo useradd -m $user
+    print pass 5
+    sudo chpasswd <<< "$user:$pass"
+    print pass 6
+    sudo mkdir /home/$user/.ssh
+    print pass 7
+    sudo zsh <<< 'print $pubkey >> /home/$user/.ssh/authorized_keys'
+    print pass 8
+    sudo chown $user:$user /home/$user/.ssh/authorized_keys
+    print pass 9
+    sudo chmod 600 /home/$user/.ssh/authorized_keys
+    print pass 10
+    sudo chown $user:$user /home/$user/.ssh
+    print pass 11
+    sudo chmod 700 /home/$user/.ssh
+    print pass 12
+EOF
+    ) &
+done
+#rm $tmp
