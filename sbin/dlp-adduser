@@ -23,7 +23,7 @@ read phone
 
 pass=$(< /dev/urandom tr -dc 0-9 | head -c${1:-6})
 sudo useradd -m $user
-sudo chpasswd <<< $user:$pass
+sudo chpasswd <<< "$user:$pass"
 
 sudo su $user -s /bin/zsh <<EOF
 ssh-keygen -q -t rsa -N '' -f \$HOME/.ssh/id_rsa <<< y 
