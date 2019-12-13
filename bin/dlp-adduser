@@ -51,7 +51,7 @@ for host in $(cat etc/hosts); do
     #ssh $host sudo useradd -m $user
     #print "Setting remote password"
     #ssh $host sudo chpasswd <<< "$user:$pass"
-    scp $tmp $host:
+    #scp $tmp $host:
     print pass 4
 
     ssh $host /bin/zsh <<EOF
