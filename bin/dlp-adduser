@@ -31,8 +31,6 @@ echo I am $USER
 # temporary. should assume script is in /usr/local/bin
 ./bin/dlp-sendsms $phone "Your Linux password: $pass"
 
-sudo passwd -e $user
-
 pubkey=$(sudo cat /home/$user/.ssh/id_rsa.pub)
 print pass 1
 tmp=$(mktemp)
@@ -75,3 +73,7 @@ EOF
     ) &
 done
 #rm $tmp
+
+sudo passwd -e $user
+
+
