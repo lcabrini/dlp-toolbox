@@ -28,7 +28,6 @@ echo I am $USER
 ./bin/dlp-sendsms $phone "Your Linux password: $pass"
 
 pubkey=$(sudo cat /home/$user/.ssh/id_rsa.pub)
-tmp=$(mktemp)
 for host in $(cat etc/hosts); do
     (
     ssh $host /bin/zsh <<EOF
