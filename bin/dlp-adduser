@@ -1,0 +1,35 @@
+#! /bin/zsh
+
+if [[ $EUID -ne 0 ]]; then
+    echo "This program should be run as root."
+    exit 1
+fi
+
+print -n "Enter username: "
+read user
+if [[ -n $(cat /etc/passwd | grep ^${user}:) ]]; then
+    print "user $user already exists"
+    exit 1
+fi
+
+print -n "Enter phone: "
+read phone
+
+pass=$(< /dev/urandom tr -dc 0-9 | head -c${1:-6})
+useradd -m $user
+chpasswd <<< $user:$pass
+
+# NOTE: remember to escape all $ 
+keyfile=$HOME/.ssh/id_rsa
+su $user -ls /bin/zsh <<EOF
+ssh-keygen -q -t rsa -N '' -f $keyfile 2> /dev/null <<< y > /dev/null
+EOF
+
+# TODO: continue here. Add user to remote and ssh-copy-id their SSH key
+# to each remote server
+
+echo I am $USER
+# temporary. should assume script is in /usr/local/bin
+./bin/dlp-sendsms $phone "Your Linux password: $pass"
+
+passwd -e $user
