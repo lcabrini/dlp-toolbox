@@ -1,5 +1,6 @@
 #! /bin/zsh
 
+# TODO: make sure user is in appropriate group 
 if [[ $EUID -eq 0 ]]; then
     echo "This program should not be run as root."
     exit 1
@@ -28,7 +29,7 @@ echo I am $USER
 ./bin/dlp-sendsms $phone "Your Linux password: $pass"
 
 pubkey=$(sudo cat /home/$user/.ssh/id_rsa.pub)
-for host in $(cat etc/hosts); do
+for host in $(cat etc/hosts | cut -d':' -f2); do
     (
     ssh $host /bin/zsh <<EOF
     sudo /usr/sbin/useradd -m $user
