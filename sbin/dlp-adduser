@@ -10,11 +10,16 @@ print -n "Enter username: "
 read user
 if [[ -n $(cat /etc/passwd | grep ^${user}:) ]]; then
     print "user $user already exists"
+    # TODO: don't exit just because local user doesn't exist.
     exit 1
 fi
 
 print -n "Enter phone: "
 read phone
+
+# TODO: read in user's email so that we can send them a welcome mail
+
+# TODO: keep a track of DLP users in /usr/local/etc/passwd
 
 pass=$(< /dev/urandom tr -dc 0-9 | head -c${1:-6})
 sudo useradd -m $user
@@ -30,6 +35,9 @@ echo I am $USER
 
 pubkey=$(sudo cat /home/$user/.ssh/id_rsa.pub)
 for host in $(cat etc/hosts | cut -d':' -f2); do
+    # TODO: print messages based on the result of each command
+    # TODO: redirect the output of the SSH session so that we can 
+    # capture it
     (
     ssh $host /bin/zsh <<EOF
     sudo /usr/sbin/useradd -m $user
