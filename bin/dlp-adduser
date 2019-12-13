@@ -55,9 +55,9 @@ for host in $(cat etc/hosts); do
     print pass 4
 
     ssh $host /bin/zsh <<EOF
-    sudo useradd -m $user
+    sudo /usr/sbin/useradd -m $user
     print pass 5
-    sudo chpasswd <<< "$user:$pass"
+    sudo /usr/sbin/chpasswd <<< "$user:$pass"
     print pass 6
     sudo mkdir /home/$user/.ssh
     print pass 7
