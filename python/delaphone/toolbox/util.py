@@ -2,11 +2,22 @@ from colorama import Fore, Style
 
 def ask_yesno(prompt):
     while True:
-        ans = input("{}{} (yes/no)?{} ".format(
-            Style.BRIGHT, prompt, Style.RESET_ALL)).strip().lower()
+        prompt = build_prompt(prompt, ("yes", "no"), "?")
+        ans = input(prompt).strip().lower()
         if ans in ('n', 'no'):
             return False
         elif ans in ('y', 'yes'):
             return True
         else:
             print("Unrecognized answer. Try again")
+
+def build_prompt(prompt, options=(), punctuation=":"):
+    p = "{}{}{}".format(Style.BRIGHT, prompt, Style.RESET_ALL)
+    o = ["{}{}{}".format(Fore.GREEN, opt, Fore.RESET) for opt in options]
+    if len(options) == 2:
+        p += " ({})".format('/'.join(o))
+    elif len(options) > 2:
+        p += " ({})".format(', '.join(o))
+    p += "{} ".format(punctuation)
+         
+    return p
