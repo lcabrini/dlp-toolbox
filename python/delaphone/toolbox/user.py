@@ -1,3 +1,5 @@
+import string
+import random
 import subprocess
 import shlex
 import pexpect
@@ -22,3 +24,10 @@ def check_sudo_password(password):
     else:
         # Hopefully we never get here
         return False
+
+def generate_password():
+    # This may change later.
+    pw = ''.join(random.choice(string.ascii_uppercase) for i in range(3))
+    pw += "-"
+    pw += ''.join(random.choice(string.digits) for i in range(6))
+    return pw
