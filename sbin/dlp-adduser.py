@@ -8,10 +8,14 @@ from colorama import Fore, Style
 
 # TODO: add proper path
 sys.path.append("python")
+from delaphone.toolbox.user import can_sudo
 from delaphone.toolbox.util import *
 
 if os.geteuid() == 0:
     print("This program should not be run as root")
+    sys.exit(1)
+elif not can_sudo():
+    print("You do not have sudo rights on this system")
     sys.exit(1)
 
 colorama.init()
