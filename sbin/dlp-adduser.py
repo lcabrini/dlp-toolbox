@@ -41,7 +41,7 @@ if not ask_yesno("Do you want to continue"):
     sys.exit(1)
 sudo_password = inputpw("Enter your password")
 if not check_sudo_password(sudo_password):
-    print("Authencation failed.")
+    print("{}Authencation failed.{}".format(Fore.RED, Fore.RESET))
     sys.exit(1)
   
 
