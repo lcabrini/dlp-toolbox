@@ -8,7 +8,7 @@ from colorama import Fore, Style
 
 # TODO: add proper path
 sys.path.append("python")
-from delaphone.toolbox.user import can_sudo
+from delaphone.toolbox.user import *
 from delaphone.toolbox.util import *
 
 if os.geteuid() == 0:
@@ -39,7 +39,11 @@ password. The email address will be used to send a welcome message.
 print(sudo_intro.strip())
 if not ask_yesno("Do you want to continue"):
     sys.exit(1)
-password = inputpw("Enter your password")
+sudo_password = inputpw("Enter your password")
+if not check_sudo_password(sudo_password):
+    print("Authencation failed.")
+    sys.exit(1)
+  
 
 print(userdetails_intro)
 username = input("Enter username: ")
