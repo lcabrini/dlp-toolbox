@@ -49,5 +49,4 @@ print(userdetails_intro)
 username = inputs("Enter username")
 phone = inputs("Enter phone number")
 email = inputs("Enter email")
-
-
+password = generate_password()
