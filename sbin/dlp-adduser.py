@@ -4,6 +4,10 @@ import sys
 import os
 from getpass import getpass
 
+# TODO: add proper path
+sys.path.append("python")
+from delaphone.toolbox.util import ask_yesno
+
 if os.geteuid() == 0:
     print("This program should not be run as root")
     sys.exit(1)
@@ -18,11 +22,7 @@ If this is not the case you may want to exit now.
 """
 
 print(sudo_intro.strip())
-ans = input("Continue (Y/N)? ").strip().lower()
-if ans in ('y', 'yes'):
-    print("said yes")
-else:
-    print("said no")
+if not ask_yesno("Do you want to continue"):
     sys.exit(1)
 
 password = getpass("Enter your password: ")
