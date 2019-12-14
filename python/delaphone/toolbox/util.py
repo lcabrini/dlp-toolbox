@@ -1,8 +1,9 @@
+from getpass import getpass
 from colorama import Fore, Style
 
 def ask_yesno(prompt):
     while True:
-        prompt = build_prompt(prompt, ("yes", "no"), "?")
+        prompt = build_prompt(prompt, "?", ("yes", "no"))
         ans = input(prompt).strip().lower()
         if ans in ('n', 'no'):
             return False
@@ -11,7 +12,11 @@ def ask_yesno(prompt):
         else:
             print("Unrecognized answer. Try again")
 
-def build_prompt(prompt, options=(), punctuation=":"):
+def inputpw(prompt="Password"):
+    prompt = build_prompt(prompt)
+    return getpass(prompt)
+
+def build_prompt(prompt, punctuation=":", options=()):
     p = "{}{}{}".format(Style.BRIGHT, prompt, Style.RESET_ALL)
     o = ["{}{}{}".format(Fore.GREEN, opt, Fore.RESET) for opt in options]
     if len(options) == 2:
