@@ -46,6 +46,6 @@ if not check_sudo_password(sudo_password):
   
 
 print(userdetails_intro)
-username = input("Enter username: ")
-password = input("Enter phone number: ")
-email = input("Enter email: ")
+username = inputs("Enter username")
+password = inputs("Enter phone number")
+email = inputs("Enter email")

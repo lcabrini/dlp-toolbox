@@ -16,6 +16,10 @@ def inputpw(prompt="Password"):
     prompt = build_prompt(prompt)
     return getpass(prompt)
 
+def inputs(prompt):
+    prompt = build_prompt(prompt)
+    return input(prompt)
+
 def build_prompt(prompt, punctuation=":", options=()):
     p = "{}{}{}".format(Style.BRIGHT, prompt, Style.RESET_ALL)
     o = ["{}{}{}".format(Fore.GREEN, opt, Fore.RESET) for opt in options]
