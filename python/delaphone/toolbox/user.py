@@ -31,3 +31,15 @@ def generate_password():
     pw += "-"
     pw += ''.join(random.choice(string.digits) for i in range(6))
     return pw
+
+def user_exists(username):
+    with open("/etc/passwd", "r") as file:
+        for line in file:
+            if line.startswith("{}:".format(username)):
+                return True
+    return False
+
+print(user_exists("lorenzo"))
+print(user_exists("root"))
+print(user_exists("foobar"))
+print(user_exists("barfbag"))
