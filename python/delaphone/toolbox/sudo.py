@@ -26,8 +26,9 @@ def check_sudo_password(password):
         # Hopefully we never get here
         return False
 
-def sudo(sudo_password, cmd):
-    child = pexpect.spawn("sudo {}".format(cmd))
+def sudo(sudo_password, cmd, user=None):
+    opt = "-u {}".format(user) if user else ''
+    child = pexpect.spawn("sudo {} {}".format(user, cmd))
     child.expect("[sudo]*: ")
     child.sendline(sudo_password)
     i = child.expect(['[sudo]*:', pexpect.EOF])
