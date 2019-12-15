@@ -32,3 +32,8 @@ def add_user(sudo_password, username, password):
     child.sendline("chpasswd <<< '{}:{}'".format(username, password))
     child.expect("#")
     child.close()
+
+def generate_ssh_keys(username, sudo_password):
+    cmd = "ssh-keygen -q -t rsa -N '' -f /home/{}/.ssh/id_rsa".format(
+            username)
+    sudo(sudo_password, cmd, username)

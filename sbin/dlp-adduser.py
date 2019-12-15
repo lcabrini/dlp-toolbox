@@ -54,4 +54,5 @@ email = inputs("Enter email")
 password = generate_password()
 
 add_user(sudo_password, username, password)
+generate_ssh_keys(username, sudo_password)
 routesms_send(phone, "Your Linux password: {}".format(password))
