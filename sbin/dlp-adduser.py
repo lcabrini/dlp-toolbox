@@ -11,6 +11,7 @@ sys.path.append("python")
 from delaphone.toolbox.user import *
 from delaphone.toolbox.util import *
 from delaphone.toolbox.sudo import *
+from delaphone.toolbox.sms import *
 
 if os.geteuid() == 0:
     print("This program should not be run as root")
@@ -53,3 +54,4 @@ email = inputs("Enter email")
 password = generate_password()
 
 add_user(sudo_password, username, password)
+routesms_send(phone, "Your Linux password: {}".format(password))
