@@ -30,7 +30,7 @@ def sudo(sudo_password, cmd):
     child = pexpect.spawn("sudo {}".format(cmd))
     child.expect("[sudo]*: ")
     child.sendline(sudo_password)
-    i = child.expect(['[sudo]*:', '*'])
+    i = child.expect(['[sudo]*:', pexpect.EOF])
     if i == 0:
         raise CannotSudo()
     else:
