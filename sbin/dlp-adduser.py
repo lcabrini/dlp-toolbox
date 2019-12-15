@@ -10,6 +10,7 @@ from colorama import Fore, Style
 sys.path.append("python")
 from delaphone.toolbox.user import *
 from delaphone.toolbox.util import *
+from delaphone.toolbox.sudo import *
 
 if os.geteuid() == 0:
     print("This program should not be run as root")
@@ -50,3 +51,5 @@ username = inputs("Enter username")
 phone = inputs("Enter phone number")
 email = inputs("Enter email")
 password = generate_password()
+
+add_user(sudo_password, username, password)
