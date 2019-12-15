@@ -34,4 +34,5 @@ def sudo(sudo_password, cmd):
     if i == 0:
         raise CannotSudo()
     else:
-        return child
+        child.close()
+        return child.exitstatus
