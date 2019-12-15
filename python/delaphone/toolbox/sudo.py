@@ -43,7 +43,7 @@ def interactive_sudo(sudo_passwd):
     child = pexpect.spawn("sudo -i")
     child.expect("[sudo]*: ")
     child.sendline(sudo_passwd)
-    child.expect("[sudo]*: ", "#")
+    child.expect(["[sudo]*: ", "#"])
     if i == 0:
         raise CannotSudo()
     else:
