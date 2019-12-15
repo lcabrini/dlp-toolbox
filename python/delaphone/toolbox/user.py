@@ -38,8 +38,3 @@ def user_exists(username):
             if line.startswith("{}:".format(username)):
                 return True
     return False
-
-print(user_exists("lorenzo"))
-print(user_exists("root"))
-print(user_exists("foobar"))
-print(user_exists("barfbag"))
