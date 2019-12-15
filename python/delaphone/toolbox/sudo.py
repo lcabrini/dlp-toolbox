@@ -36,3 +36,15 @@ def sudo(sudo_password, cmd):
     else:
         child.close()
         return child.exitstatus
+
+def interactive_sudo(sudo_passwd):
+    """ NOTE: client code is expected to send exit to the process. """
+
+    child = pexpect.spawn("sudo -i")
+    child.expect("[sudo]*: ")
+    child.sendline(sudo_passwd)
+    child.expect("[sudo]*: ", "#")
+    if i == 0:
+        raise CannotSudo()
+    else:
+        return child
