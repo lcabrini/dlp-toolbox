@@ -42,7 +42,7 @@ def interactive_sudo(sudo_passwd, user=None):
     """ NOTE: client code is expected to send exit to the process. """
 
     opt = "-u {}".format(user) if user else ''
-    child = pexpect.spawn("sudo {} -i")
+    child = pexpect.spawn("sudo {} -i".format(opt))
     child.expect("[sudo]*: ")
     child.sendline(sudo_passwd)
     i = child.expect(["[sudo]*: ", "#"])
