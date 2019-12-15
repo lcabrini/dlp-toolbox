@@ -2,6 +2,8 @@ import shlex
 import subprocess
 import pexpect
 
+class CannotSudo(Exception)
+
 def can_sudo():
     cmd = shlex.split("sudo -nv")
     try:
@@ -22,3 +24,14 @@ def check_sudo_password(password):
     else:
         # Hopefully we never get here
         return False
+
+def sudo(sudo_password, cmd):
+    child = pexpect.spawn("sudo {}".format(cmd))
+    child.expect("[sudo]*: ")
+    child.sendline(sudo_password)
+    i = child.expect(['[sudo]*:', '*'])
+    if i == 0:
+        raise CannotSudo()
+    else:
+        return child
+
