@@ -1,39 +1,40 @@
 import string
 import random
-import subprocess
-import shlex
-import pexpect
-from delaphone.toolbox.sudo import *
 
 class UserExists(Exception):
     pass
 
-def generate_password():
-    # This may change later.
-    pw = ''.join(random.choice(string.ascii_uppercase) for i in range(3))
-    pw += "-"
-    pw += ''.join(random.choice(string.digits) for i in range(6))
-    return pw
+class User():
+    def __init__(self, connection):
+        self.conn = connection
 
-def user_exists(username):
-    with open("/etc/passwd", "r") as file:
-        for line in file:
-            if line.startswith("{}:".format(username)):
-                return True
-    return False
+    def exists(self, username):
+        cmd = "grep '^{}:' /etc/passwd".format(username)
+        return len(self.conn.run(cmd)) > 0
 
-def add_user(sudo_password, username, password):
-    if user_exists(username):
-        raise UserExists()
+    def add(self, username, password=None):
+        if self.exists(username):
+            raise UserExists("user {} already exists on {}".format(
+                username, self.conn.host))
 
-    child = interactive_sudo(sudo_password)
-    child.sendline("useradd -m {}".format(username))
-    child.expect("#")
-    child.sendline("chpasswd <<< '{}:{}'".format(username, password))
-    child.expect("#")
-    child.close()
+        if password is None:
+            password = self.generate_password()
 
-def generate_ssh_keys(username, sudo_password):
-    cmd = "ssh-keygen -q -t rsa -N '' -f /home/{}/.ssh/id_rsa".format(
-            username)
-    sudo(sudo_password, cmd, username)
+        self.conn.sudo("useradd -m {}".format(username))
+        self.conn.sudo("chpasswd <<< '{}:{}'".format(username, password))
+
+    def delete(self, username):
+        conn.sudo("userdel -r {}".format(username))
+
+    def generate_password(self):
+        # This may change later.
+        uc = string.ascii_uppercase
+        pw = ''.join(random.choice(uc) for i in range(3))
+        pw += "-"
+        pw += ''.join(random.choice(string.digits) for i in range(6))
+        return pw
+
+    def generate_ssh_keys(username, sudo_password):
+        keyfile = '/home/{}/.ssh/id_rsa'.format(username)
+        cmd = "ssh-keygen -q -t rsa -N '' -f {}".format(keyfile)
+        conn.sudo(cmd)
