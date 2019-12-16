@@ -46,4 +46,3 @@ def generate_password(self):
     pw += "-"
     pw += ''.join(random.choice(string.digits) for i in range(6))
     return pw
-
