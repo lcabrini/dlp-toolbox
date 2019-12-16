@@ -32,7 +32,7 @@ class Connection():
     def sudo(self, cmd, **kwargs):
         if 'user' in kwargs:
             cmd = "sudo -u {} {}".format(kwargs['user'], cmd)
-        else
+        else:
             cmd = "sudo {}".format(cmd)
         stdin, stdout, stderr = self.ssh.exec_command(cmd, get_pty=True)
         time.sleep(0.1)
