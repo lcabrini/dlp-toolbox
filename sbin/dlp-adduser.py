@@ -7,11 +7,11 @@ import colorama
 from colorama import Fore, Style
 
 # TODO: add proper path
-sys.path.append("python")
+sys.path.append(".")
 from delaphone.toolbox.user import *
 from delaphone.toolbox.util import *
-from delaphone.toolbox.sudo import *
 from delaphone.toolbox.sms import *
+from delaphone.toolbox import ssh
 
 if os.geteuid() == 0:
     print("This program should not be run as root")
@@ -53,6 +53,9 @@ phone = inputs("Enter phone number")
 email = inputs("Enter email")
 password = generate_password()
 
-add_user(sudo_password, username, password)
-generate_ssh_keys(username, sudo_password)
-routesms_send(phone, "Your Linux password: {}".format(password))
+for host in ('127.0.0.1', '192.168.0.184'):
+    connection = ssh.Connection(host=host, password=sudo_password)
+    user = User(connection)
+    user.add(username, password)
+#generate_ssh_keys(username, sudo_password)
+#routesms_send(phone, "Your Linux password: {}".format(password))
