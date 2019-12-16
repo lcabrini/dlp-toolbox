@@ -4,7 +4,7 @@ import random
 class UserExists(Exception): pass
 class KeyPairExists(Exception): pass
 
-class User():
+class User:
     def __init__(self, connection):
         self.conn = connection
 
