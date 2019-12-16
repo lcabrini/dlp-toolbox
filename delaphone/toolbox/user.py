@@ -21,7 +21,7 @@ class User():
         self.conn.sudo("chpasswd <<< '{}:{}'".format(username, password))
 
     def delete(self, username):
-        conn.sudo("userdel -r {}".format(username))
+        self.conn.sudo("userdel -r {}".format(username))
 
 
     def generate_ssh_keys(username, sudo_password):
