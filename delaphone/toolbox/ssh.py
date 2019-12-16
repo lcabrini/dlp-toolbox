@@ -1,3 +1,4 @@
+import os
 import time
 from getpass import getuser
 import paramiko
@@ -28,8 +29,11 @@ class Connection():
         stdin, stdout, stderr = self.ssh.exec_command(cmd)
         return stdout.readlines()
 
-    def sudo(self, cmd):
-        cmd = "sudo {}".format(cmd)
+    def sudo(self, cmd, **kwargs):
+        if 'user' in kwargs:
+            cmd = "sudo -u {} {}".format(kwargs['user'], cmd)
+        else
+            cmd = "sudo {}".format(cmd)
         stdin, stdout, stderr = self.ssh.exec_command(cmd, get_pty=True)
         time.sleep(0.1)
         stdin.write("{}\n".format(self.password))
