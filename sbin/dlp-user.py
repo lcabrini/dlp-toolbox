@@ -66,8 +66,9 @@ for host in ('127.0.0.1', '192.168.0.184'):
     user = User(connection)
     if command == 'add':
         user.add(username, password)
+        user.generate_ssh_keys(username)
     elif command == 'delete':
         user.delete(username)
 
-#generate_ssh_keys(username, sudo_password)
-#routesms_send(phone, "Your Linux password: {}".format(password))
+if command == 'add':
+    routesms_send(phone, "Your Linux password: {}".format(password))
