@@ -16,9 +16,15 @@ from delaphone.toolbox import ssh
 if os.geteuid() == 0:
     print("This program should not be run as root")
     sys.exit(1)
-elif not can_sudo():
-    print("You do not have sudo rights on this system")
+
+if len(sys.argv[1:]) < 1:
+    print("usage: dlp-user command")
     sys.exit(1)
+command = sys.argv[1]
+
+#elif not can_sudo():
+#    print("You do not have sudo rights on this system")
+#    sys.exit(1)
 
 colorama.init()
 
@@ -45,17 +51,23 @@ sudo_password = inputpw("Enter your password")
 if not check_sudo_password(sudo_password):
     print("{}Authencation failed.{}".format(Fore.RED, Fore.RESET))
     sys.exit(1)
-  
 
-print(userdetails_intro)
-username = inputs("Enter username")
-phone = inputs("Enter phone number")
-email = inputs("Enter email")
-password = generate_password()
+if command == 'add':
+    print(userdetails_intro)
+    username = inputs("Enter username")
+    phone = inputs("Enter phone number")
+    email = inputs("Enter email")
+    password = generate_password()
+elif command == 'delete':
+    username = inputs("Enter the user to delete")
 
 for host in ('127.0.0.1', '192.168.0.184'):
     connection = ssh.Connection(host=host, password=sudo_password)
     user = User(connection)
-    user.add(username, password)
+    if command == 'add':
+        user.add(username, password)
+    elif command == 'delete':
+        user.delete(username)
+
 #generate_ssh_keys(username, sudo_password)
 #routesms_send(phone, "Your Linux password: {}".format(password))
