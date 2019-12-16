@@ -23,8 +23,14 @@ class User():
     def delete(self, username):
         self.conn.sudo("userdel -r {}".format(username))
 
-
-    def generate_ssh_keys(username, sudo_password):
+    def generate_ssh_keys(self, username):
         keyfile = '/home/{}/.ssh/id_rsa'.format(username)
+        cmd = "test -f {}; echo $?".format(username)
+        has_keyfile = len(self.conn.sudo(cmd)) > 0
+
+        if has_keyfile:
+            msg = "user {} already has a default SSH key".format(username)
+            raise KeyPairExists(msg)
+
         cmd = "ssh-keygen -q -t rsa -N '' -f {}".format(keyfile)
-        conn.sudo(cmd)
+        self.conn.sudo(cmd, user=username)
