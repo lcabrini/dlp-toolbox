@@ -23,13 +23,6 @@ class User():
     def delete(self, username):
         conn.sudo("userdel -r {}".format(username))
 
-    def generate_password(self):
-        # This may change later.
-        uc = string.ascii_uppercase
-        pw = ''.join(random.choice(uc) for i in range(3))
-        pw += "-"
-        pw += ''.join(random.choice(string.digits) for i in range(6))
-        return pw
 
     def generate_ssh_keys(username, sudo_password):
         keyfile = '/home/{}/.ssh/id_rsa'.format(username)

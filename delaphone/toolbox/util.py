@@ -38,3 +38,12 @@ def can_sudo():
 def check_sudo_password(sudo_password):
     # TODO: implement this
     return True
+
+def generate_password(self):
+    # This may change later.
+    uc = string.ascii_uppercase
+    pw = ''.join(random.choice(uc) for i in range(3))
+    pw += "-"
+    pw += ''.join(random.choice(string.digits) for i in range(6))
+    return pw
+
