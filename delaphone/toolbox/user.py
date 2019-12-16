@@ -12,13 +12,10 @@ class User():
         cmd = "grep '^{}:' /etc/passwd".format(username)
         return len(self.conn.run(cmd)) > 0
 
-    def add(self, username, password=None):
+    def add(self, username, password):
         if self.exists(username):
             raise UserExists("user {} already exists on {}".format(
                 username, self.conn.host))
-
-        if password is None:
-            password = self.generate_password()
 
         self.conn.sudo("useradd -m {}".format(username))
         self.conn.sudo("chpasswd <<< '{}:{}'".format(username, password))
