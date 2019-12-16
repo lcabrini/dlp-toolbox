@@ -1,8 +1,8 @@
 import string
 import random
 
-class UserExists(Exception):
-    pass
+class UserExists(Exception): pass
+class KeyPairExists(Exception): pass
 
 class User():
     def __init__(self, connection):
@@ -25,11 +25,13 @@ class User():
 
     def generate_ssh_keys(self, username):
         keyfile = '/home/{}/.ssh/id_rsa'.format(username)
-        cmd = "test -f {}; echo $?".format(username)
-        has_keyfile = len(self.conn.sudo(cmd)) > 0
+        cmd = "test -f {} && echo true".format(keyfile)
+        ans = self.conn.sudo(cmd, user=username)
+        has_keyfile = len(ans) > 0
 
         if has_keyfile:
-            msg = "user {} already has a default SSH key".format(username)
+            msg = "user {} already has a default SSH key on {}".format(
+                    username, self.conn.host)
             raise KeyPairExists(msg)
 
         cmd = "ssh-keygen -q -t rsa -N '' -f {}".format(keyfile)
