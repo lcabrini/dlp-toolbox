@@ -30,3 +30,11 @@ def build_prompt(prompt, punctuation=":", options=()):
     p += "{} ".format(punctuation)
          
     return p
+
+def can_sudo():
+    # TODO: implement this
+    return True
+
+def check_sudo_password(sudo_password):
+    # TODO: implement this
+    return True
