@@ -1,3 +1,5 @@
+import string
+import random
 from getpass import getpass
 from colorama import Fore, Style
 
