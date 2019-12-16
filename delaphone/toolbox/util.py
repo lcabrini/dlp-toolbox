@@ -39,7 +39,7 @@ def check_sudo_password(sudo_password):
     # TODO: implement this
     return True
 
-def generate_password(self):
+def generate_password():
     # This may change later.
     uc = string.ascii_uppercase
     pw = ''.join(random.choice(uc) for i in range(3))
