@@ -1,4 +1,9 @@
+import os
 from getpass import getuser
+
+class SystemNotDetected: pass
+class CommandNotFound: pass
+class MissingPassword: pass
 
 class Host:
     def __init__(self, **kwargs):
@@ -19,3 +24,9 @@ class Host:
             # TODO: should we raise an error instead?
             self.password = ''
 
+    def detect(self):
+        if os.path.isfile("/etc/fedora-release"):
+            from delaphone.toolbox.system.fedora import Fedora
+            return Fedora(self)
+        else:
+            raise SystemNotDetected()
