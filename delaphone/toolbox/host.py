@@ -25,7 +25,7 @@ class Host:
     and remote. This class is a base class for *Localhost* and 
     *RemoteHost*.
 
-    You will normally not create a Host directory. Use the get_host
+    You will normally not create a Host directly. Use the get_host
     function instead."
     """
 
