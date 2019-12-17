@@ -3,11 +3,12 @@ import time
 from getpass import getuser
 import paramiko
 
-class Connection():
+class RemoteHost:
     def __init__(self, **kwargs):
         if 'host' in kwargs:
             self.host = kwargs['host']
         else:
+            # TODO: would it be better to raise an exception here?
             self.host = '127.0.0.1'
 
         if 'username' in kwargs:
