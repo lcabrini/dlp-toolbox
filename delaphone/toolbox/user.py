@@ -1,12 +1,15 @@
 import string
 import random
+from delaphone.toolbox.tool import Tool
 
 class UserExists(Exception): pass
 class KeyPairExists(Exception): pass
 
-class User:
-    def __init__(self, connection):
-        self.conn = connection
+# TODO: rename all 'self.conn' to 'self.handler'
+
+class User(Tool):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def exists(self, username):
         cmd = "grep '^{}:' /etc/passwd".format(username)
