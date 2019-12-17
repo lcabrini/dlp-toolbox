@@ -29,7 +29,10 @@ class Host:
             from delaphone.toolbox.system.fedora import Fedora
             return Fedora(self)
         else:
-            raise SystemNotDetected()
+            print("Failed to detect system, falling back to Linux")
+            from delaphone.toolbox.system.linux import Linux
+            return Linux(self)
+            #raise SystemNotDetected()
 
 def get_host(**kwargs):
     if 'host' in kwargs and not kwargs['host'] is None:
