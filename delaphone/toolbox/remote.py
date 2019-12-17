@@ -1,5 +1,6 @@
 import os
 import time
+import re
 from getpass import getuser
 import paramiko
 from delaphone.toolbox.host import Host
@@ -15,10 +16,8 @@ class RemoteHost(Host):
 
     def run(self, cmd):
         stdin, stdout, stderr = self.ssh.exec_command(cmd)
-        out = '\n'.join(stdout.readlines()).splitlines()
-        out = list(filter(None, out))
-        err = '\n'.join(stderr.readlines()).splitlines()
-        err = list(filter(None, err))
+        out = [o.strip() for o in stdout.readlines()]
+        err = [e.strip() for e in stderr.readlines()]
         ret = stdout.channel.recv_exit_status()
         return ret, out, err
 
@@ -30,9 +29,9 @@ class RemoteHost(Host):
         stdin, stdout, stderr = self.ssh.exec_command(cmd)
         time.sleep(0.1)
         stdin.write("{}\n".format(self.password))
-        out = ''.join(stdout.readlines()).splitlines()
-        out = list(filter(None, out))
-        err = ''.join(stderr.readlines()).splitlines()
-        err = list(filter(None, err))
+        out = [o.strip() for o in stdout.readlines()]
+        err = [e.strip() for e in stderr.readlines()]
+        if len(err) > 0:
+            err[0] = re.sub(r'\[sudo\].+?: ', '', err[0])
         ret = stdout.channel.recv_exit_status()
         return ret, out, err
