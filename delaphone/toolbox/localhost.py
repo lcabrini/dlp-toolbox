@@ -1,7 +1,7 @@
 import subprocess
 
-class Localhost:
-    def __init__(self):
+class Localhost(Tool):
+    def __init__(self, **kwargs):
         pass
 
     def run(self, cmd):
