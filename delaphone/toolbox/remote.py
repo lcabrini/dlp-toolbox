@@ -15,7 +15,10 @@ class RemoteHost(Host):
 
     def run(self, cmd):
         stdin, stdout, stderr = self.ssh.exec_command(cmd)
-        return stdout.readlines()
+        out = stdout.readlines()
+        err = stdout.readlines()
+        ret = stdout.channel.recv_exit_status
+        return ret, out, err
 
     def sudo(self, cmd, **kwargs):
         if 'user' in kwargs:
