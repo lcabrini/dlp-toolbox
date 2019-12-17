@@ -1,6 +1,6 @@
 import subprocess
 
-class Localhost(Tool):
+class Localhost:
     def __init__(self, **kwargs):
         pass
 
