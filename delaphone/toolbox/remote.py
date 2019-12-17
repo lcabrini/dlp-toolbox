@@ -30,8 +30,6 @@ class RemoteHost(Host):
         stdin, stdout, stderr = self.ssh.exec_command(cmd)
         time.sleep(0.1)
         stdin.write("{}\n".format(self.password))
-        print("STDERR: {}".format(stderr.readlines()))
-        print("STDOUT: {}".format(stdout.readlines()))
         out = ''.join(stdout.readlines()).splitlines()
         out = list(filter(None, out))
         err = ''.join(stderr.readlines()).splitlines()
