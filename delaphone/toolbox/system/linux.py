@@ -9,6 +9,15 @@ class Linux:
         ret, out, err = self.host.run(cmd)
         return ret == 0
 
+    def directory_exists(self, path, **kwargs):
+        """ 
+        Checks if the directory given by path exists. Returns True if
+        it does or False if it doesn't.
+        """
+        cmd = "test -d {}".format(path)
+        ret, out, err = self._call(cmd, **kwargs)
+        return ret == 0
+
     def ls(self, path):
         cmd = "/bin/ls {}".format(path)
         ret, out, err = self.host.run(cmd)
@@ -21,8 +30,9 @@ class Linux:
         was not possible to create the directory.
         """
         cmd = "/usr/bin/mkdir {}".format(path)
-        self._call(cmd, **kwargs)
-        return 0
+        ret, out, err = self._call(cmd, **kwargs)
+        if ret != 0:
+            raise CommandFailed(err)
 
     def tail_messages(self):
         cmd = 'tail -n 10 /var/log/messages'
@@ -41,14 +51,9 @@ class Linux:
         root), otherwise it will be called as the current user.
         """
         if 'sudo' in kwargs and kwargs['sudo'] is True:
-            ret, out, err = self.host.sudo(cmd)
+            return self.host.sudo(cmd)
         else:
-            ret, out, err = self.host.run(cmd)
-
-        if ret == 0:
-            return ret, out
-        else:
-            raise CommandFailed(err)
+            return self.host.run(cmd)
 
     def deploy(self):
         pass
