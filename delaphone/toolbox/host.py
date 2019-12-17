@@ -1,3 +1,9 @@
+# Copyright 2019 Lorenzo Cabrini
+#
+# Use of this source code is governed by an MIT-style
+# license that can be found in the LICENSE file or at
+# https://opensource.org/licenses/MIT.
+
 import os
 from getpass import getuser
 from delaphone.toolbox.system.linux import Linux
@@ -7,7 +13,21 @@ class NoSuchCommand(Exception): pass
 class MissingPassword(Exception): pass
 
 class Host:
+    """ 
+    A host is a machine on a network. There are two types of host: local
+    and remote. This class is a base class for *Localhost* and 
+    *RemoteHost*.
+
+    You will normally not create a Host directory. Use the get_host
+    function instead."
+    """
+
     def __init__(self, **kwargs):
+        """
+        Refer to the Localhost and RemoteHost documentation for details
+        on which kwargs are important to those classes.
+        """
+
         if 'host' in kwargs:
             self.host = kwargs['host']
         else:
@@ -26,6 +46,15 @@ class Host:
             self.password = ''
 
     def detect(self):
+        """
+        Detects the type of system that this host is running and return
+        an object representing that system (with a reference to this
+        host).
+
+        If the host cannot be detected, it returns a generic Linux 
+        object.
+        """
+
         # TODO: this is acceptable for now, since we are only working with
         # Linux systems. Later I may need a different base class here.
         linux = Linux(self)
@@ -42,6 +71,13 @@ class Host:
             #raise SystemNotDetected()
 
 def get_host(**kwargs):
+    """ 
+    Returns a host object embedded in a Linux object, which leads to the
+    obvious question: if this function doesn't return a Host object, why
+    is it called get_host()? This is a good question. I wrote this code
+    and I honestly don't have a clue.
+    """
+
     if 'host' in kwargs and not kwargs['host'] is None:
         print("{} is a remote host".format(kwargs['host']))
         from delaphone.toolbox.remote import RemoteHost
