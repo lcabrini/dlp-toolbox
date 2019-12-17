@@ -19,7 +19,7 @@ class RemoteHost(Host):
         out = list(filter(None, out))
         err = '\n'.join(stdout.readlines()).splitlines()
         err = list(filter(None, out))
-        ret = stdout.channel.recv_exit_status
+        ret = stdout.channel.recv_exit_status()
         return ret, out, err
 
     def sudo(self, cmd, **kwargs):
@@ -32,5 +32,5 @@ class RemoteHost(Host):
         stdin.write("{}\n".format(self.password))
         out = ''.join(stdout.readlines())
         err = ''.join(stderr.readlines())
-        ret = stdout.channel.recv_exit_status
+        ret = stdout.channel.recv_exit_status()
         return ret, out, err
