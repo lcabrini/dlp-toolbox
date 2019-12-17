@@ -1,9 +1,9 @@
 import os
 from getpass import getuser
 
-class SystemNotDetected: pass
-class CommandNotFound: pass
-class MissingPassword: pass
+class SystemNotDetected(Exception): pass
+class NoSuchCommand(Exception): pass
+class MissingPassword(Exception): pass
 
 class Host:
     def __init__(self, **kwargs):
