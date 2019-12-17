@@ -1,5 +1,6 @@
 import os
 from getpass import getuser
+from delaphone.toolbox.system.linux import Linux
 
 class SystemNotDetected(Exception): pass
 class NoSuchCommand(Exception): pass
@@ -25,13 +26,16 @@ class Host:
             self.password = ''
 
     def detect(self):
-        if os.path.isfile("/etc/fedora-release"):
+        # TODO: this is acceptable for now, since we are only working with
+        # Linux systems. Later I may need a different base class here.
+        linux = Linux(self)
+
+        if linux.file_exists("/etc/fedora-release"):
             from delaphone.toolbox.system.fedora import Fedora
             return Fedora(self)
         else:
             print("Failed to detect system, falling back to Linux")
-            from delaphone.toolbox.system.linux import Linux
-            return Linux(self)
+            return linux
             #raise SystemNotDetected()
 
 def get_host(**kwargs):
