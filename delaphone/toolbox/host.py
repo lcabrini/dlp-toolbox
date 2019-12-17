@@ -67,13 +67,16 @@ class Host:
         linux = Linux(self)
 
         if linux.file_exists("/etc/fedora-release"):
+            log.debug("detected Fedora on %s.", self)
             from delaphone.toolbox.system.fedora import Fedora
             return Fedora(self)
         elif linux.file_exists("/etc/issabel.conf"):
+            log.debug("detected Issabel on %s", self)
             from delaphone.toolbox.system.issabel import Issabel
             return Issabel(self)
         else:
-            log.warn("failed to detect system, using generic Linux")
+            log.warn("failed to detect OS on %s, using generic Linux", 
+                    self)
             return linux
             #raise SystemNotDetected()
 
