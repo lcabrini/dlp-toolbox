@@ -2,7 +2,7 @@ import subprocess
 
 class Localhost:
     def __init__(self, **kwargs):
-        pass
+        self.host = 'localhost'
 
     def run(self, cmd):
         pass
