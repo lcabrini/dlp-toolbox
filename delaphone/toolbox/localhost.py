@@ -18,12 +18,16 @@ class Localhost(Host):
             raise NoSuchCommand(args[0])
 
     def sudo(self, cmd, **kwargs):
+        if not 'password' in kwargs:
+            raise MissingPassword()
+
         if 'user' in kwargs:
             cmd = 'sudo -Su {} {}'.format(kwargs['user'], cmd)
         else:
             cmd = 'sudo -S {}'.format(cmd)
+
         args = shlex.split(cmd)
-        with Popen(args, stdout=PIPE, stderr=PIPE, stdin=PIPE) as proc:
+        with Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) as p:
             passwd = "{}\n".format(self.password).encode()
-            stdout, stderr = proc.communicate(passwd)
-        return stdout
+            out, err = proc.communicate(passwd)
+        return p.returncode, out, err
