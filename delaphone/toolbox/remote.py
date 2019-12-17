@@ -22,10 +22,13 @@ class RemoteHost(Host):
 
     def sudo(self, cmd, **kwargs):
         if 'user' in kwargs:
-            cmd = "sudo -u {} {}".format(kwargs['user'], cmd)
+            cmd = "sudo -Su {} {}".format(kwargs['user'], cmd)
         else:
-            cmd = "sudo {}".format(cmd)
+            cmd = "sudo -S {}".format(cmd)
         stdin, stdout, stderr = self.ssh.exec_command(cmd, get_pty=True)
         time.sleep(0.1)
         stdin.write("{}\n".format(self.password))
-        return stdout.readlines()[2:]
+        out = ''.join(stdout.readlines())
+        err = ''.join(stderr.readlines()))
+        ret = stdout.channel.recv_exit_status
+        return ret, out, err
