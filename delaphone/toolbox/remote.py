@@ -35,3 +35,6 @@ class RemoteHost(Host):
             err[0] = re.sub(r'\[sudo\].+?: ', '', err[0])
         ret = stdout.channel.recv_exit_status()
         return ret, out, err
+
+    def __str__(self):
+        return self.host

@@ -39,3 +39,6 @@ class Localhost(Host):
             if err:
                 err = err.decode().splitlines()
         return p.returncode, out, err
+
+    def __str__(self):
+        return "localhost"
