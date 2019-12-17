@@ -29,5 +29,5 @@ class Localhost(Host):
         args = shlex.split(cmd)
         with Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) as p:
             passwd = "{}\n".format(self.password).encode()
-            out, err = proc.communicate(passwd)
+            out, err = p.communicate(passwd)
         return p.returncode, out, err
