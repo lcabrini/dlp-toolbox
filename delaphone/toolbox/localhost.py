@@ -9,8 +9,13 @@ class Localhost(Host):
         super().__init__(**kwargs)
 
     def run(self, cmd):
-        response = subprocess.run(cmd, stdout=PIPE, stderr=PIPE)
-        return response.stdout()
+        args = shlex.split(cmd)
+        try:
+            with Popen(args, stdout=PIPE, stdin=PIPE) as p:
+                out, err = p.communicate()
+            return p.returncode, out, err
+        except FileNotFoundError:
+            raise NoSuchCommand(args[0])
 
     def sudo(self, cmd, **kwargs):
         if 'user' in kwargs:
