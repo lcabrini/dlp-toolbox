@@ -8,11 +8,12 @@ import os
 from getpass import getuser
 from delaphone.toolbox.system.linux import Linux
 
-import logging
+import coloredlogs, logging
 # TODO: this configuration should not be here.
-logging.basicConfig(format="%(levelname)s: %(message)s",
-        level=logging.INFO)
+#logging.basicConfig(format="%(levelname)s: %(message)s",
+#        level=logging.INFO)
 log = logging.getLogger(__name__)
+coloredlogs.install(level='DEBUG', logger=log)
 
 class SystemNotDetected(Exception): pass
 class NoSuchCommand(Exception): pass
