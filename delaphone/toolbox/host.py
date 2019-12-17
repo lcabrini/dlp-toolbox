@@ -8,6 +8,12 @@ import os
 from getpass import getuser
 from delaphone.toolbox.system.linux import Linux
 
+import logging
+# TODO: this configuration should not be here.
+logging.basicConfig(format="%(levelname)s: %(message)s",
+        level=logging.INFO)
+log = logging.getLogger(__name__)
+
 class SystemNotDetected(Exception): pass
 class NoSuchCommand(Exception): pass
 class MissingPassword(Exception): pass
@@ -66,7 +72,7 @@ class Host:
             from delaphone.toolbox.system.issabel import Issabel
             return Issabel(self)
         else:
-            print("Failed to detect system, falling back to Linux")
+            log.warn("failed to detect system, using generic Linux")
             return linux
             #raise SystemNotDetected()
 
@@ -79,10 +85,10 @@ def get_host(**kwargs):
     """
 
     if 'host' in kwargs and not kwargs['host'] is None:
-        print("{} is a remote host".format(kwargs['host']))
+        log.debug("connecting to remote host: %s", kwargs['host'])
         from delaphone.toolbox.remote import RemoteHost
         return RemoteHost(**kwargs).detect()
     else:
+        log.debug("working on localhost")
         from delaphone.toolbox.localhost import Localhost
-        print("connecting to localhost")
         return Localhost(**kwargs).detect()
