@@ -6,7 +6,7 @@ class Host:
             self.host = kwargs['host']
         else:
             # TODO: should we raise an error instead?
-            self.host = kwargs['localhost']
+            self.host = 'localhost'
 
         if 'username' in kwargs:
             self.username = kwargs['username']
