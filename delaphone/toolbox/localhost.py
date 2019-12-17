@@ -13,6 +13,10 @@ class Localhost(Host):
         try:
             with Popen(args, stdout=PIPE, stdin=PIPE) as p:
                 out, err = p.communicate()
+                if out:
+                    out = out.decode()
+                if err:
+                    err = err.decode()
             return p.returncode, out, err
         except FileNotFoundError:
             raise NoSuchCommand(args[0])
@@ -30,4 +34,8 @@ class Localhost(Host):
         with Popen(args, stdin=PIPE, stdout=PIPE, stderr=PIPE) as p:
             passwd = "{}\n".format(self.password).encode()
             out, err = p.communicate(passwd)
+            if out:
+                out = out.decode()
+            if err:
+                err = err.decode()
         return p.returncode, out, err
