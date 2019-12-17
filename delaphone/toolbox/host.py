@@ -30,3 +30,13 @@ class Host:
             return Fedora(self)
         else:
             raise SystemNotDetected()
+
+def get_host(**kwargs):
+    if 'host' in kwargs and not kwargs['host'] is None:
+        print("{} is a remote host".format(kwargs['host']))
+        from delaphone.toolbox.remote import RemoteHost
+        return RemoteHost(**kwargs).detect()
+    else:
+        from delaphone.toolbox.localhost import Localhost
+        print("connecting to localhost")
+        return Localhost(**kwargs).detect()
