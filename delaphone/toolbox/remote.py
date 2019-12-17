@@ -15,8 +15,10 @@ class RemoteHost(Host):
 
     def run(self, cmd):
         stdin, stdout, stderr = self.ssh.exec_command(cmd)
-        out = ''.join(stdout.readlines())
-        err = ''.join(stdout.readlines())
+        out = '\n'.join(stdout.readlines()).splitlines()
+        out = list(filter(None, out))
+        err = '\n'.join(stdout.readlines()).splitlines()
+        err = list(filter(None, out))
         ret = stdout.channel.recv_exit_status
         return ret, out, err
 
