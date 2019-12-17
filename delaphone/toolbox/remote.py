@@ -29,6 +29,6 @@ class RemoteHost(Host):
         time.sleep(0.1)
         stdin.write("{}\n".format(self.password))
         out = ''.join(stdout.readlines())
-        err = ''.join(stderr.readlines()))
+        err = ''.join(stderr.readlines())
         ret = stdout.channel.recv_exit_status
         return ret, out, err
