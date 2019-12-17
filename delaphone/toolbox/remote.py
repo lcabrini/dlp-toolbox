@@ -2,24 +2,11 @@ import os
 import time
 from getpass import getuser
 import paramiko
+from delaphone.toolbox.host import Host
 
-class RemoteHost:
+class RemoteHost(Host):
     def __init__(self, **kwargs):
-        if 'host' in kwargs:
-            self.host = kwargs['host']
-        else:
-            # TODO: would it be better to raise an exception here?
-            self.host = '127.0.0.1'
-
-        if 'username' in kwargs:
-            self.username = kwargs['username']
-        else:
-            self.username = getuser()
-
-        if 'password' in kwargs:
-            self.password = kwargs['password']
-        else:
-            self.password = ''
+        super().__init__(**kwargs)
 
         self.ssh = paramiko.SSHClient()
         self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
