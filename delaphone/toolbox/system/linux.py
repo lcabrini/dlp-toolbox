@@ -9,6 +9,7 @@ class CommandFailed(Exception): pass
 class Linux:
     def __init__(self, host):
         self.host = host
+        self.services = []
 
     def file_exists(self, path):
         cmd = "test -f {}".format(path)
