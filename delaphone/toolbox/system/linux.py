@@ -53,8 +53,8 @@ class Linux:
     def _call(self, cmd, **kwargs):
         """
         Helper method for calling Linux commands. If the keyword
-        argument sudo is True, then then the command will be called
-        as the user specified in the 'user' keyword argument (default
+        argument sudo is True, then the command will be called as the 
+        user specified in the 'user' keyword argument (default
         root), otherwise it will be called as the current user.
         """
         if 'sudo' in kwargs and kwargs['sudo'] is True:
